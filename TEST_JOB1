@@ -1,1 +1,27 @@
-echo 'HI'
+echo 'Inside Jnkinsfile'
+pipeline {
+
+   stages {
+   
+   stage('Load Workspace') {
+            git credentialsId: 'b1eeb4a9-3f56-4e31-bbd1-e480ef147e9b', url: 'https://github.com/orezl/DevOpsTest.git'
+         }
+
+      stage('Build') {
+         steps {
+            // To run Maven on a Windows agent, use
+             bat "mvn -Dmaven.test.failure.ignore=true clean package"
+         }
+
+         post {
+            // If Maven was able to run the tests, even if some of the test
+            // failed, record the test results and archive the jar file.
+            success {
+               junit '**/target/surefire-reports/TEST-*.xml'
+               archiveArtifacts 'target/*.jar'
+            }
+         }
+      }
+   }
+}
+
