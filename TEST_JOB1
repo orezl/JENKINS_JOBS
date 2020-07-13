@@ -1,6 +1,6 @@
 echo 'Inside Jnkinsfile'
 pipeline {
-	agent none
+	agent any
    stages {
    
    stage('Load Workspace') {
