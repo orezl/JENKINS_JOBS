@@ -3,6 +3,19 @@ pipeline {
 	agent any
    stages {
    
+      stage('Load Variables') {
+			 steps {
+           setx JAVA_HOME "C:\Program Files\Java\jdk1.8.0_121"
+           setx PATH "%PATH%;%JAVA_HOME%\bin";
+	   setx MAVEN_HOME "C:\Users\RAHUL\Documents\apache-maven-3.6.3"
+	   setx PATH "%PATH%;%MAVEN_HOME%\bin";
+	   
+	    bat "mvn -version"
+	     bat "java -version"
+
+	}
+         }
+   
    stage('Load Workspace') {
 			 steps {
             git credentialsId: 'b1eeb4a9-3f56-4e31-bbd1-e480ef147e9b', url: 'https://github.com/orezl/practice.git'
