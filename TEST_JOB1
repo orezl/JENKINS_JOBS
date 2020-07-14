@@ -5,7 +5,7 @@ pipeline {
    
    stage('Load Workspace') {
 			 steps {
-            git branch: 'DevOps', credentialsId: 'b1eeb4a9-3f56-4e31-bbd1-e480ef147e9b', url: 'https://github.com/orezl/DevOpsTest.git'
+            git branch: 'Master', credentialsId: 'b1eeb4a9-3f56-4e31-bbd1-e480ef147e9b', url: 'https://github.com/orezl/practice.git'
 			}
          }
 
