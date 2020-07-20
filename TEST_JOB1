@@ -1,21 +1,24 @@
 pipeline {
 	agent any
 	
+	/*
 	environment {
         mvnhome = tool 'Maven_Home'
         mvncmd = "${mvnhome}/bin/mvn" 
         JAVA_HOME= C:\Program Files\Java\jdk-14.0.1
+	*/
     }
 	
    stages {
    
    stage('Load Workspace') {
 			 steps {
-			        bat "echo ${mvnhome}"
+	/*		        bat "echo ${mvnhome}"
              bat "echo ${mvncmd}"
               bat "echo %JAVA_HOME%"
                bat "echo %MAVEN_HOME%"
-            git credentialsId: '407d352c-b625-467d-b35a-06ca01ed3e84', url: 'https://github.com/orezl/practice.git'
+          */
+	  git credentialsId: '407d352c-b625-467d-b35a-06ca01ed3e84', url: 'https://github.com/orezl/practice.git'
 			}
          }
 
@@ -27,7 +30,7 @@ pipeline {
              bat "echo ${mvncmd}"
             */ 
             // To run Maven on a Windows agent, use
-             bat "${mvncmd} -Dmaven.test.failure.ignore=true clean package"
+             sh "mvn -Dmaven.test.failure.ignore=true clean package"
          }
 
          post {
