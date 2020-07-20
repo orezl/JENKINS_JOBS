@@ -1,14 +1,14 @@
 pipeline {
-	agent any
+	agent CentOS8
 	
 	/*
 	environment {
         mvnhome = tool 'Maven_Home'
         mvncmd = "${mvnhome}/bin/mvn" 
         JAVA_HOME= C:\Program Files\Java\jdk-14.0.1
-	*/
-    }
 	
+    }
+	*/
    stages {
    
    stage('Load Workspace') {
