@@ -92,8 +92,8 @@ pipeline {
 		
 		
 		*/
-		 sh "echo '${Build_Revision}'"
-		  sh "echo '${Type}'"
+		 sh "echo '${params.Build_Revision}'"
+		  sh "echo '${params.Type}'"
 		
 		
 			}
