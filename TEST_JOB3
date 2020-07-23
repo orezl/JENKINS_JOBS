@@ -1,0 +1,135 @@
+pipeline {
+	agent {label 'CentOS8'}
+	
+	environment {
+	    Build_ID="${params.Build_Version}"
+		}
+
+   stages {
+   
+    stage('Sanity checks') {
+			 steps {
+
+		  sh "echo '${BUILD_ID}'.war Build started"
+	script{
+	try{
+
+	        sh '''
+		docker ps
+		echo "Deleting Previous myappserver container"
+		docker rm -f myappserver
+		'''
+	}
+	catch(err){
+	echo "======================No prvious myappserver container.==================================="
+	}
+	
+		try{
+
+	        sh '''
+		docker images
+		echo "Deleting Previous created rahulkhanna210/testimage image"
+		imageID=$(docker images | grep -E 'rahulkhanna210/testimage' | awk -e '{print $3}')
+		docker rmi -f $imageID
+		'''
+	}
+	catch(err){
+	echo "========No prvious image==================."
+	}
+			}
+         }
+   }
+   
+   stage('Load Workspace') {
+			 steps {
+       
+        parallel(
+      a: {
+      
+        echo "This is branch a"
+        
+
+	 git branch: 'DevOps', credentialsId: 'b1eeb4a9-3f56-4e31-bbd1-e480ef147e9b', url: 'https://github.com/orezl/DevOpsTest.git'
+			}
+         }
+
+      stage('Sonar Analysis') {
+         steps {
+	    // sh "mvn sonar:sonar -Dsonar.projectKey=testjob -Dsonar.host.url=http://10.0.3.2:9000 -Dsonar.login=4864f6a69c64306f7af1a59ecf073b72388c95c8"
+	     sh "mvn versions:set -DnewVersion='${BUILD_ID}'"
+         }
+	 }
+
+      stage('Build') {
+         steps {
+	 sh "mvn clean package"
+         }
+
+         post {
+            success {
+               
+               archiveArtifacts 'target/*.war'
+            }
+         }
+      }
+	  
+	stage('Deploy to Nexus') {
+			 steps {
+
+	        sh "mvn deploy"
+			}
+         }
+	 
+	 stage('Deploy to Tomcat') {
+			 steps {
+	        sh '''
+			docker build -t rahulkhanna210/testimage:latest .
+			docker run --name myappserver -p 8082:8080 -d rahulkhanna210/testimage:latest
+		'''
+			}
+         }
+         
+        
+      },
+      
+      b: {
+        echo "This is branch b"
+      
+git credentialsId: 'b1eeb4a9-3f56-4e31-bbd1-e480ef147e9b', url: 'https://github.com/orezl/practice.git'
+			}
+         }
+
+      stage('Sonar Analysis') {
+         steps {
+	    // sh "mvn sonar:sonar -Dsonar.projectKey=testjob -Dsonar.host.url=http://10.0.3.2:9000 -Dsonar.login=4864f6a69c64306f7af1a59ecf073b72388c95c8"
+	     sh "mvn versions:set -DnewVersion='${BUILD_ID}'"
+         }
+	 }
+
+      stage('Build') {
+         steps {
+	 sh "mvn clean package"
+         }
+
+         post {
+            success {
+               
+               archiveArtifacts 'target/*.jar'
+            }
+         }
+      }
+	  
+	stage('Deploy to Nexus') {
+			 steps {
+
+	        sh "mvn deploy"
+			}
+         }
+      
+      }
+    )
+       
+       
+   
+   }
+}
