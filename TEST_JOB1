@@ -13,7 +13,8 @@ pipeline {
       stage('Build') {
          steps {
 
-             sh "mvn clean package sonar:sonar"
+	     sh "mvn sonar:sonar -Dsonar.projectKey=testjob -Dsonar.host.url=http://10.0.3.2:9000 -Dsonar.login=4864f6a69c64306f7af1a59ecf073b72388c95c8"
+             sh "mvn clean package"
          }
 
          post {
