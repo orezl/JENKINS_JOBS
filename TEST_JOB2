@@ -2,7 +2,7 @@ pipeline {
 	agent {label 'CentOS8'}
 	
 	environment {
-	    Build_ID = ${params.Build_Version}
+	    Build_ID="${params.Build_Version}"
 		}
 
    stages {
