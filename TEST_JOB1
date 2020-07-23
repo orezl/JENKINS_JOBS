@@ -35,6 +35,7 @@ pipeline {
 			 steps {
 
 	        sh '''
+			rm -fr load
 			mkdir load
 			chmod -R 777 load
 			cd load
