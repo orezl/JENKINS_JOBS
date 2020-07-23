@@ -12,7 +12,8 @@ pipeline {
 		docker images
 		docker rm -f myappserver
 		'''
-	}catch{
+	}
+	catch(err){
 	echo "No prvious myappserver container."
 	}
 			}
