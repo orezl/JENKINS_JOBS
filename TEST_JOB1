@@ -5,6 +5,8 @@ pipeline {
    
     stage('Sanity checks') {
 			 steps {
+
+	script{
 	try{
 
 	        sh '''
@@ -18,6 +20,7 @@ pipeline {
 	}
 			}
          }
+   }
    
    stage('Load Workspace') {
 			 steps {
