@@ -11,12 +11,25 @@ pipeline {
 
 	        sh '''
 		docker ps
-		docker images
+		echo "Deleting Previous myappserver container"
 		docker rm -f myappserver
 		'''
 	}
 	catch(err){
-	echo "No prvious myappserver container."
+	echo "======================No prvious myappserver container.==================================="
+	}
+	
+		try{
+
+	        sh '''
+		docker images
+		echo "Deleting Previous created rahulkhanna210/testimage image"
+		imageID=$(docker images | grep -E 'rahulkhanna210/testimage' | awk -e '{print $3}')
+		docker rmi -f $imageID
+		'''
+	}
+	catch(err){
+	echo "========No prvious image==================."
 	}
 			}
          }
