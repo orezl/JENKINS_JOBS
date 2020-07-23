@@ -3,6 +3,17 @@ pipeline {
 
    stages {
    
+    stage('Sanity checks') {
+			 steps {
+
+	        sh '''
+		docker ps
+		docker images
+		docker rm -f myappserver
+		'''
+			}
+         }
+   
    stage('Load Workspace') {
 			 steps {
 
@@ -10,11 +21,15 @@ pipeline {
 			}
          }
 
-      stage('Build') {
+      stage('Sonar Analysis') {
          steps {
 
 	     sh "mvn sonar:sonar -Dsonar.projectKey=testjob -Dsonar.host.url=http://10.0.3.2:9000 -Dsonar.login=4864f6a69c64306f7af1a59ecf073b72388c95c8"
-             sh "mvn clean package"
+         }
+
+      stage('Build') {
+         steps {
+	 sh "mvn clean package"
          }
 
          post {
@@ -43,7 +58,7 @@ pipeline {
 			wget http://10.0.3.2:8081/repository/Release/koddas/web/war/wwp/1.0.0/wwp-1.0.0.war
 			cd ..
 			docker build -t rahulkhanna210/testimage:1.0.0 .
-			docker run -p 8082:8080 -d rahulkhanna210/testimage:1.0.0 
+			docker run --name myappserver -p 8082:8080 -d rahulkhanna210/testimage:1.0.0 
 		'''
 			}
          }
