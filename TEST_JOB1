@@ -40,8 +40,8 @@ pipeline {
 			cd load
 			wget http://10.0.3.2:8081/repository/Release/koddas/web/war/wwp/1.0.0/wwp-1.0.0.war
 			cd ..
-			docker build -t rahulkhanna210/testimage:1.0.0
-			docker run -p 8082:8080 -d rahulkhanna210/testimage:1.0.0
+			docker build -t rahulkhanna210/testimage:1.0.0 .
+			docker run -p 8082:8080 -d rahulkhanna210/testimage:1.0.0 
 		'''
 			}
          }
