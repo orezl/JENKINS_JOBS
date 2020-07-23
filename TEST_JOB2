@@ -2,7 +2,7 @@ pipeline {
 	agent {label 'CentOS8'}
 	
 	environment {
-	    Build_ID="`echo '${params.Build_Version}' | sed 's/ *$//g'`"
+	    Build_ID="$(echo '${params.Build_Version}' | sed 's/ *$//g')"
 		}
 
    stages {
