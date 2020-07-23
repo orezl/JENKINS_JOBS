@@ -6,6 +6,10 @@ pipeline {
     stage('Sanity checks') {
 			 steps {
 
+	
+	
+	/*
+	
 	script{
 	try{
 
@@ -32,6 +36,9 @@ pipeline {
 	echo "========No prvious image==================."
 	}
 			}
+			
+	
+	
          }
    }
    
@@ -82,6 +89,13 @@ pipeline {
 			docker build -t rahulkhanna210/testimage:1.0.0 .
 			docker run --name myappserver -p 8082:8080 -d rahulkhanna210/testimage:1.0.0 
 		'''
+		
+		
+		*/
+		 sh "echo '${Build_Revision}'"
+		  sh "echo '${Type}'"
+		
+		
 			}
          }
    }
