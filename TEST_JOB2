@@ -70,7 +70,7 @@ pipeline {
 	stage('Deploy to Nexus') {
 			 steps {
 
-	        sh "mvn -U deploy"
+	        sh "mvn deploy"
 			}
          }
 	 
@@ -78,6 +78,7 @@ pipeline {
 			 steps {
 
 	        sh '''
+			/*
 			rm -fr load
 			mkdir load
 		        chmod -R 777 load
@@ -92,6 +93,7 @@ pipeline {
 			fi 
 			
 			cd ..
+			*/
 			docker build -t rahulkhanna210/testimage:"${BUILD_ID}" .
 			docker run --name myappserver -p 8082:8080 -d rahulkhanna210/testimage:"${BUILD_ID}"
 		'''
