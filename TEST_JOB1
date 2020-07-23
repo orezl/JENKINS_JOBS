@@ -35,9 +35,9 @@ pipeline {
 			 steps {
 
 	        sh '''
-			rm -fr load
-			mkdir load
-			chmod -R 777 load
+			#rm -fr load
+			#mkdir load
+			#chmod -R 777 load
 			cd load
 			wget http://10.0.3.2:8081/repository/Release/koddas/web/war/wwp/1.0.0/wwp-1.0.0.war
 			cd ..
