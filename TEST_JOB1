@@ -5,12 +5,16 @@ pipeline {
    
     stage('Sanity checks') {
 			 steps {
+	try{
 
 	        sh '''
 		docker ps
 		docker images
 		docker rm -f myappserver
 		'''
+	}catch{
+	echo "No prvious myappserver container."
+	}
 			}
          }
    
