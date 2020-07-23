@@ -2,7 +2,7 @@ pipeline {
 	agent {label 'CentOS8'}
 	
 	environment {
-	    Build_ID = getBuildID(${params.Build_Revision},${params.Type})
+	    Build_ID = '${params.Build_Version}'
 		}
 
    stages {
@@ -10,8 +10,6 @@ pipeline {
     stage('Sanity checks') {
 			 steps {
 
-		  sh "echo '${params.Build_Revision}'"
-		  sh "echo '${params.Type}'"
 		  sh "echo '${BUILD_ID}'"
 	
 	/*
@@ -104,14 +102,4 @@ pipeline {
 			}
          }
    }
-}
-
-
-
-def getBuildID(buildrev,buildtype) {
-    if("Snapshot".equals(buildtype)) {
-        return "'${buildrev}'-'${buildtype}'";
-    }else {
-        return "'${buildrev}'";
-    }
 }
