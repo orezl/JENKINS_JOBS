@@ -1,0 +1,88 @@
+pipeline {
+	agent {label 'CentOS8'}
+
+   stages {
+   
+    stage('Sanity checks') {
+			 steps {
+
+	script{
+	try{
+
+	        sh '''
+		docker ps
+		echo "Deleting Previous myappserver container"
+		docker rm -f myappserver
+		'''
+	}
+	catch(err){
+	echo "======================No prvious myappserver container.==================================="
+	}
+	
+		try{
+
+	        sh '''
+		docker images
+		echo "Deleting Previous created rahulkhanna210/testimage image"
+		imageID=$(docker images | grep -E 'rahulkhanna210/testimage' | awk -e '{print $3}')
+		docker rmi -f $imageID
+		'''
+	}
+	catch(err){
+	echo "========No prvious image==================."
+	}
+			}
+         }
+   }
+   
+   stage('Load Workspace') {
+			 steps {
+
+	 git branch: 'DevOps', credentialsId: 'b1eeb4a9-3f56-4e31-bbd1-e480ef147e9b', url: 'https://github.com/orezl/DevOpsTest.git'
+			}
+         }
+
+      stage('Sonar Analysis') {
+         steps {
+
+	     sh "mvn sonar:sonar -Dsonar.projectKey=testjob -Dsonar.host.url=http://10.0.3.2:9000 -Dsonar.login=4864f6a69c64306f7af1a59ecf073b72388c95c8"
+         }
+	 }
+
+      stage('Build') {
+         steps {
+	 sh "mvn clean package"
+         }
+
+         post {
+            success {
+               
+               archiveArtifacts 'target/*.war'
+            }
+         }
+      }
+	  
+	stage('Deploy to Nexus') {
+			 steps {
+
+	        sh "mvn deploy"
+			}
+         }
+	 
+	 stage('Deploy to Tomcat') {
+			 steps {
+
+	        sh '''
+			rm -fr load
+			mkdir load
+		        chmod -R 777 load
+			cd load
+			wget http://10.0.3.2:8081/repository/Release/koddas/web/war/wwp/1.0.0/wwp-1.0.0.war
+			cd ..
+			docker build -t rahulkhanna210/testimage:1.0.0 .
+			docker run --name myappserver -p 8082:8080 -d rahulkhanna210/testimage:1.0.0 
+		'''
+			}
+         }
+   }
+}
