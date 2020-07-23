@@ -26,6 +26,7 @@ pipeline {
 
 	     sh "mvn sonar:sonar -Dsonar.projectKey=testjob -Dsonar.host.url=http://10.0.3.2:9000 -Dsonar.login=4864f6a69c64306f7af1a59ecf073b72388c95c8"
          }
+	 }
 
       stage('Build') {
          steps {
