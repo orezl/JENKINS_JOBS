@@ -24,10 +24,10 @@ pipeline {
          }
       }
 	  
-	     stage('Deploy to Tomcat') {
+	     stage('Deploy to Nexus') {
 			 steps {
 
-	        sh "curl -v -u admin:admin -T /home/centos/Jenkins/slave-agent/workspace/TEST_1/target/wwp-1.0.0.war 'http://192.168.56.121:9080/manager/text/deploy?path=/wwp-1.0.0&update=true'"
+	        sh "mvn deploy"
 			}
          }
    }
