@@ -70,7 +70,7 @@ pipeline {
 	stage('Deploy to Nexus') {
 			 steps {
 
-	        sh "mvn -DuniqueVersion=false deploy"
+	        sh "mvn deploy:deploy-file -DuniqueVersion=false"
 			}
          }
 	 
