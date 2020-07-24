@@ -79,14 +79,7 @@ pipeline {
 			}
          }
 	 
-	 stage('Push to docker hub') {
-			 steps {
-				withCredentials([string(credentialsId: 'DockerPwd', variable: 'DockerPwd')]) {
-    					sh "docker login -u rahulkhanna2910 -p ${DockerPwd}"
-				}
-				sh 'docker push rahulkhanna210/testimage:latest'
-			}
-         }
+
 	 
    }
 }
