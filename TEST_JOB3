@@ -1,5 +1,7 @@
 pipeline {
 
+  agent {label 'CentOS8'}
+
    stages {
    
     stage('Sanity checks') {
