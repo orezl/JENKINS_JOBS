@@ -74,7 +74,7 @@ pipeline {
 
 	        sh '''
 			docker build -t rahulkhanna210/testimage:latest .
-			docker run --name myappserver -p 8082:8080 -d rahulkhanna210/testimage:latest"
+			docker run --name myappserver -p 8082:8080 -d rahulkhanna210/testimage:latest
 		'''
 			}
          }
