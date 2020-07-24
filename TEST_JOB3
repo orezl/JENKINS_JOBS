@@ -30,7 +30,7 @@ pipeline {
          }
       }
 	  
-	stage('Deploy to Nexus') {
+/*	stage('Deploy to Nexus') {
 			 steps {
 
 	       build 'Deploy'
@@ -43,6 +43,24 @@ pipeline {
 			}
          }
 	 
-	 
+*/
+
+        stage('Deploy') {
+            parallel {
+                stage('Deploy to Nexus) {
+                    steps {
+                        build 'Deploy'
+                    }
+                }
+		
+                stage('Deploy To Tomcat') {
+                    steps {
+                        build 'DeloytoTomcat'
+                    }
+                }
+            }
+        }
+
+
    }
 }
